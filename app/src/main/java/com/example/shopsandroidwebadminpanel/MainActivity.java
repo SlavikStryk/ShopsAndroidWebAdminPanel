@@ -23,8 +23,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.shopsandroidwebadminpanel.api.services.ProductService;
+import com.example.shopsandroidwebadminpanel.dto.ProductAddDTO;
 import com.example.shopsandroidwebadminpanel.dto.ProductDTO;
-import com.oginotihiro.cropview.CropView;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -207,20 +207,21 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         Toast.makeText(getApplicationContext(), link, Toast.LENGTH_SHORT).show();
-        ProductDTO productDTO = new ProductDTO();
-        productDTO.setName(name);
-        productDTO.setImage(base64);
-        productDTO.setPrice(price);
-        productDTO.setDescription(desc);
-        productDTO.setType_product(type);
-        productDTO.setLink(link);
+        ProductAddDTO productaddDTO = new ProductAddDTO();
+        productaddDTO.setName(name);
+        productaddDTO.setImage(base64);
+        productaddDTO.setPrice(Double.parseDouble(price));
+        productaddDTO.setDescription(desc);
+        productaddDTO.setType_product(type);
+        productaddDTO.setLink(link);
+        productaddDTO.setIdentityANDROID("PRODUCT");
         ProductService.getInstance()
                 .getProductsApi()
-                .post(productDTO)
+                .post(productaddDTO)
                 .enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
-                        Toast.makeText(getApplicationContext(), "CODE: SUCCESSFULLY", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "CODE: " + response.code(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

@@ -1,5 +1,6 @@
 package com.example.shopsandroidwebadminpanel.api;
 
+import com.example.shopsandroidwebadminpanel.dto.ProductAddDTO;
 import com.example.shopsandroidwebadminpanel.dto.ProductDTO;
 
 import java.util.List;
@@ -14,8 +15,8 @@ public interface ProductAPI {
     @GET("/api/products/all")
     public Call<List<ProductDTO>> all();
 
-    @POST("/api/Products/post")
-    public Call<Void> post(@Body ProductDTO productDTO);
+    @POST("/api/products/post")
+    public Call<Void> post(@Body ProductAddDTO productAddDTO);
 
     @DELETE("/api/products/delete")
     public Call<ProductDTO> delete(@Body ProductDTO productDTO);
