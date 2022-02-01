@@ -12,19 +12,23 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shopsandroidwebadminpanel.api.services.ProductService;
 import com.example.shopsandroidwebadminpanel.dto.ProductAddDTO;
 import com.example.shopsandroidwebadminpanel.dto.ProductDTO;
+import com.google.android.material.card.MaterialCardView;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -36,6 +40,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     MainActivity activity;
+    ProductDTO model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,153 +80,169 @@ public class MainActivity extends AppCompatActivity {
         EditText priceText = findViewById(R.id.pricetext);
         EditText desText = findViewById(R.id.destext);
         EditText typeText = findViewById(R.id.typetext);
+        EditText linkText = findViewById(R.id.linktext);
         ImageView imageView = findViewById(R.id.imagepost);
         BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
-        String base64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
         String name = nameText.getText().toString();
+        String base64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
         String desc = desText.getText().toString();
-        String price = priceText.getText().toString();
+        double price = Double.parseDouble(priceText.getText().toString());
         String type = typeText.getText().toString();
-        String link = typeText.getText().toString();
-        switch (name) {
-            case "SSD Kingston A400 120GB":
-                link = "/kingston a 400 120 gb";
-                break;
-            case "SSD KINGSTON A400 240GB":
-                link = "/kingston a 400 240 gb";
-                break;
-            case "SSD KINGSTON A400 480GB":
-                link = "/kingston a 400 480 gb";
-                break;
-            case "SSD KINGSTON A400 960GB":
-                link = "/kingston a 400 960 gb";
-                break;
-            case "SSD KINGSTON A400 1.92TB":
-                link = "/kingston a 400 1 92 tb";
-                break;
-            case "SSD KINGSTON FURY RGB 240GB":
-                link = "/kingston hyperx fury rgb 240 gb";
-                break;
-            case "SSD KINGSTON FURY RGB 480GB":
-                link = "/kingston hyperx fury rgb 480 gb";
-                break;
-            case "SSD KINGSTON FURY RGB 960GB":
-                link = "/kingston hyperx fury rgb 960 gb";
-                break;
-            case "SSD KINGSTON FURY 120GB":
-                link = "/kingston hyperx fury 120 gb";
-                break;
-            case "SSD KINGSTON FURY 240GB":
-                link = "/kingston hyperx fury 240 gb";
-                break;
-            case "SSD KINGSTON FURY 480GB":
-                link = "/kingston hyperx fury 480 gb";
-                break;
-            case "CPU Intel Core i3-10100 3.6GHz":
-                link = "/intel core i 3 10100 box 3 6 G h z";
-                break;
-            case "CPU Intel Core i5-10600KF 4.1 GHz":
-                link = "/intel core i 5 10600  K F box 4 1 G h z";
-                break;
-            case "CPU Intel Core i9-10900K 3.7 GHz":
-                link = "/intel core i 9 10900 K box 3 7 G h z";
-                break;
-            case "CPU AMD Ryzen 3 1200 3.2 GHz":
-                link = "/amd ryzen 3 1200 sAM4 box 3 2 G h z";
-                break;
-            case "CPU AMD Ryzen 5 1600 3.2 GHz":
-                link = "/amd ryzen 5 1600 sAM4 box 3 2 G h z";
-                break;
-            case "CPU AMD Ryzen 5 3500 3.2 GHz":
-                link = "/amd ryzen 5 3500 sAM4 box 3 2 G h z";
-                break;
-            case "GPU Nitro + RX 470 4G GDDR5":
-                link = "/amd sapphire radeon nitro rx 470 4 g b";
-                break;
-            case "GPU RX 570 8192Mb NITRO+":
-                link = "/amd sapphire radeon nitro rx 570 8 g b";
-                break;
-            case "GPU Sapphire RX 580 Nitro+":
-                link = "/amd sapphire radeon nitro rx 580 4 g b";
-                break;
-            case "GPU GeForce GTX 770 4096MB GDDR5":
-                link = "/asus nvidia gtx 770 4096 g b";
-                break;
-            case "GPU GeForce GT1030 2048Mb OC":
-                link = "/asus nvidia gt 1030 2 g b";
-                break;
-            case "GPU MSI GTX 1050Ti 4Gb Gaming X":
-                link = "/msi nvidia gtx 1050 4 g b";
-                break;
-            case "RAM Kingston Fury DDR4-3200 4096 MB":
-                link = "/kingston hyperx fury 1 x 4 gb 3200";
-                break;
-            case "RAM Kingston Fury DDR4-3200 2x4096 MB":
-                link = "/kingston hyperx fury 2 x 4 gb 3200";
-                break;
-            case "RAM Kingston Fury DDR4-3200 2x8192 MB":
-                link = "/kingston hyperx fury rgb 2 x 8 gb 3200";
-                break;
-            case "RAM Kingston Fury RGB DDR4-3200 4x8192 MB":
-                link = "/kingston hyperx fury rgb 4 x 8 gb 3200";
-                break;
-            case "PSU be quiet! Dark Power Pro 11 550W":
-                link = "/be quiet dark power pro 11 5 5 0 w";
-                break;
-            case "PSU be quiet! Dark Power Pro 11 750W":
-                link = "/be quiet dark power pro 11 7 5 0 w";
-                break;
-            case "PSU be quiet! Dark Power Pro 11 1200W":
-                link = "/be quiet dark power pro 11 1 2 0 0 w";
-                break;
-            case "PSU GameMax GM-400-8CM 400W":
-                link = "/gamemax 4 0 0 w gm - 4 0 0 - 8 c м";
-                break;
-            case "PSU GameMax GM-600 600W":
-                link = "/gamemax 6 0 0 w gm - 6 0 0 - 8 c м";
-                break;
-            case "PSU GameMax GM-800 800W":
-                link = "/be quiet dark power pro 11 1 2 0 0 w";
-                break;
-            case "WATERCOOLING ID-COOLING SE-903-B":
-                link = "/id cooling se 903 b blue";
-                break;
-            case "WATERCOOLING ID-COOLING SE-914-XT Basic":
-                link = "/id cooling se 914 xt basic";
-                break;
-            case "WATERCOOLING ID-COOLING SE-207-XT Black":
-                link = "/id cooling se 207 xt black";
-                break;
-            case "WATERCOOLING ID-COOLING Auraflow X 240 Snow":
-                link = "/id cooling auraflow x 240 snow";
-                break;
-            case "WATERCOOLING ID-COOLING Frostflow X360":
-                link = "/id cooling frostflow x 360";
-                break;
-            case "WATERCOOLING ID-COOLING Zoomflow 360XT":
-                link = "/id cooling zoomflow 360 xt";
-                break;
-        }
-        Toast.makeText(getApplicationContext(), link, Toast.LENGTH_SHORT).show();
-        ProductAddDTO productaddDTO = new ProductAddDTO();
-        productaddDTO.setName(name);
-        productaddDTO.setImage(base64);
-        productaddDTO.setPrice(Double.parseDouble(price));
-        productaddDTO.setDescription(desc);
-        productaddDTO.setType_product(type);
-        productaddDTO.setLink(link);
-        productaddDTO.setIdentityANDROID("PRODUCT");
+        String link = linkText.getText().toString();
+        ProductAddDTO productaddDTO = new ProductAddDTO(name, desc, price, base64, type, link, "PRODUCT");
         ProductService.getInstance()
                 .getProductsApi()
                 .post(productaddDTO)
+                .enqueue(new Callback<ProductAddDTO>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ProductAddDTO> call, @NonNull Response<ProductAddDTO> response) {
+                        Toast.makeText(getApplicationContext(), "CODE: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ProductAddDTO> call, @NonNull Throwable t) {
+
+                    }
+                });
+
+    }
+
+    public void GetWithIdFunc(View v) {
+        MaterialCardView card = findViewById(R.id.card);
+
+        EditText idText = findViewById(R.id.editgetid);
+
+        TextView prodName = findViewById(R.id.prodname);
+        TextView prodPrice = findViewById(R.id.prodprice);
+        TextView prodDescription = findViewById(R.id.proddescription);
+        ImageView prodImage = findViewById(R.id.prodimg);
+        Long id = Long.parseLong(idText.getText().toString());
+
+        ProductService
+                .getInstance()
+                .getProductsApi()
+                .getWithId(id)
+                .enqueue(new Callback<ProductDTO>() {
+                    @Override
+                    public void onResponse(@NonNull Call<ProductDTO> call, @NonNull Response<ProductDTO> response) {
+                        ProductDTO dto = response.body();
+                        byte[] decodedString = Base64.decode(dto.getImage(), Base64.DEFAULT);
+                        Bitmap btmp = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        prodName.setText(dto.getName());
+                        prodDescription.setText(dto.getDescription());
+                        prodPrice.setText(dto.getPrice());
+                        prodImage.setImageBitmap(btmp);
+                        card.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<ProductDTO> call, @NonNull Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void DeleteFunc(View v) {
+        EditText delText = findViewById(R.id.edittextdelete);
+        String name = String.valueOf(delText.getText());
+
+        MaterialCardView card = findViewById(R.id.carddel);
+        ConstraintLayout submitarea = findViewById(R.id.submitarea);
+
+        ImageView prodImageDel = findViewById(R.id.prodimgdel);
+        TextView prodNameDel = findViewById(R.id.prodnamedel);
+        TextView prodPriceDel = findViewById(R.id.prodpricedel);
+        TextView prodDescDel = findViewById(R.id.proddescdel);
+        ProductService.getInstance()
+                .getProductsApi()
+                .getWithName(name)
+                .enqueue(new Callback<ProductDTO>() {
+                    @Override
+                    public void onResponse(Call<ProductDTO> call, Response<ProductDTO> response) {
+                        ProductDTO dto = response.body();
+                        byte[] decoded = Base64.decode(dto.getImage(), Base64.DEFAULT);
+                        Bitmap btmp = BitmapFactory.decodeByteArray(decoded, 0, decoded.length);
+                        prodImageDel.setImageBitmap(btmp);
+                        prodNameDel.setText(dto.getName());
+                        prodPriceDel.setText(dto.getPrice());
+                        prodDescDel.setText(dto.getDescription());
+                        card.setVisibility(View.VISIBLE);
+                        submitarea.setVisibility(View.VISIBLE);
+                        model = dto;
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProductDTO> call, Throwable t) {
+
+                    }
+                });
+    }
+
+    public void DeleteSwitch(View v) {
+        ConstraintLayout deleteLayout = findViewById(R.id.deletefragment);
+        ConstraintLayout postLayout = findViewById(R.id.postfragment);
+        ConstraintLayout getidlayout = findViewById(R.id.getidfragment);
+        ConstraintLayout submitarea = findViewById(R.id.submitarea);
+        MaterialCardView card = findViewById(R.id.card);
+
+        deleteLayout.setVisibility(View.VISIBLE);
+        postLayout.setVisibility(View.INVISIBLE);
+        getidlayout.setVisibility(View.INVISIBLE);
+        submitarea.setVisibility(View.INVISIBLE);
+        card.setVisibility(View.INVISIBLE);
+    }
+
+    public void PostSwitch(View v) {
+        ConstraintLayout deleteLayout = findViewById(R.id.deletefragment);
+        ConstraintLayout postLayout = findViewById(R.id.postfragment);
+        ConstraintLayout getidlayout = findViewById(R.id.getidfragment);
+        ConstraintLayout submitarea = findViewById(R.id.submitarea);
+        MaterialCardView card = findViewById(R.id.card);
+
+        deleteLayout.setVisibility(View.INVISIBLE);
+        postLayout.setVisibility(View.VISIBLE);
+        getidlayout.setVisibility(View.INVISIBLE);
+        card.setVisibility(View.INVISIBLE);
+        submitarea.setVisibility(View.INVISIBLE);
+    }
+
+    public void GetIdSwitch(View v) {
+        ConstraintLayout deleteLayout = findViewById(R.id.deletefragment);
+        ConstraintLayout postLayout = findViewById(R.id.postfragment);
+        ConstraintLayout getidlayout = findViewById(R.id.getidfragment);
+        ConstraintLayout submitarea = findViewById(R.id.submitarea);
+        MaterialCardView card = findViewById(R.id.card);
+
+        deleteLayout.setVisibility(View.INVISIBLE);
+        postLayout.setVisibility(View.INVISIBLE);
+        getidlayout.setVisibility(View.VISIBLE);
+        submitarea.setVisibility(View.INVISIBLE);
+        card.setVisibility(View.INVISIBLE);
+        submitarea.setVisibility(View.GONE);
+    }
+
+    public void GetNameSwitch(View v) {
+
+    }
+
+    public void YesButton(View v) {
+        MaterialCardView carddel = findViewById(R.id.carddel);
+        carddel.setVisibility(View.GONE);
+        ConstraintLayout submitarea = findViewById(R.id.submitarea);
+
+        String name = model.getName();
+        ProductService.getInstance()
+                .getProductsApi()
+                .delete(name)
                 .enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
+                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                         Toast.makeText(getApplicationContext(), "CODE: " + response.code(), Toast.LENGTH_SHORT).show();
+
                     }
 
                     @Override
@@ -229,24 +250,13 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-
     }
 
-    public void Deleteswitch(View v) {
-        ConstraintLayout deleteLayout = findViewById(R.id.deletefragment);
-        ConstraintLayout postLayout = findViewById(R.id.postfragment);
+    public void NoButton(View v) {
+        MaterialCardView card = findViewById(R.id.carddel);
+        ConstraintLayout submitarea = findViewById(R.id.submitarea);
 
-
-        deleteLayout.setVisibility(View.VISIBLE);
-        postLayout.setVisibility(View.INVISIBLE);
-    }
-
-    public void Postswitch(View v) {
-        ConstraintLayout deleteLayout = findViewById(R.id.deletefragment);
-        ConstraintLayout postLayout = findViewById(R.id.postfragment);
-
-
-        deleteLayout.setVisibility(View.INVISIBLE);
-        postLayout.setVisibility(View.VISIBLE);
+        card.setVisibility(View.GONE);
+        submitarea.setVisibility(View.GONE);
     }
 }

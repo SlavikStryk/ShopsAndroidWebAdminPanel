@@ -10,4 +10,5 @@
     <color name="transparent100">#00FFFFFF</color>
     <color name="graylight">#e0e0e0</color>
     <color name="darkgray">#adadad</color>
+    <color name="transparent0">#00000000</color>
 </resources>

@@ -1,5 +1,7 @@
 package com.example.shopsandroidwebadminpanel.dto;
 
+import java.util.IdentityHashMap;
+
 import lombok.Data;
 
 @Data
@@ -8,9 +10,19 @@ public class ProductAddDTO {
     private String description;
     private double price;
     private String image;
-    private String type_product;
+    private String typeproduct;
     private String link;
-    private String IdentityANDROID;
+    private String indentityANDROID;
+
+    public ProductAddDTO(String name, String description, double price, String image, String type_product, String link, String IdentityANDROID) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.image = image;
+        this.typeproduct = type_product;
+        this.link = link;
+        this.indentityANDROID = IdentityANDROID;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -29,7 +41,7 @@ public class ProductAddDTO {
     }
 
     public void setType_product(String type_product) {
-        this.type_product = type_product;
+        this.typeproduct = type_product;
     }
 
     public void setLink(String link) {
@@ -37,6 +49,6 @@ public class ProductAddDTO {
     }
 
     public void setIdentityANDROID(String identityANDROID) {
-        IdentityANDROID = identityANDROID;
+        indentityANDROID = identityANDROID;
     }
 }

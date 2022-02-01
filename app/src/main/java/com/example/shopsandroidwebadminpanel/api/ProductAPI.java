@@ -10,14 +10,21 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface ProductAPI {
     @GET("/api/products/all")
     public Call<List<ProductDTO>> all();
 
-    @POST("/api/products/post")
-    public Call<Void> post(@Body ProductAddDTO productAddDTO);
+    @GET("/api/Products/get/{id}")
+    public Call<ProductDTO> getWithId(@Path("id") Long id);
 
-    @DELETE("/api/products/delete")
-    public Call<ProductDTO> delete(@Body ProductDTO productDTO);
+    @GET("/api/products/getname/{name}")
+    public Call<ProductDTO> getWithName(@Path("name") String name);
+
+    @POST("/api/Products/post")
+    public Call<ProductAddDTO> post(@Body ProductAddDTO productAddDTO);
+
+    @DELETE("/api/products/delete/{name}")
+    public Call<Void> delete(@Path("name") String name);
 }
