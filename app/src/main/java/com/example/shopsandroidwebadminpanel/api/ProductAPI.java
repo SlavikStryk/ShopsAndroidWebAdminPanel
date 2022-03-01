@@ -19,7 +19,7 @@ public interface ProductAPI {
     @GET("/api/Products/get/{id}")
     public Call<ProductDTO> getWithId(@Path("id") Long id);
 
-    @GET("/api/products/getname/{name}")
+    @GET("/api/Products/getname/{name}")
     public Call<ProductDTO> getWithName(@Path("name") String name);
 
     @POST("/api/Products/post")

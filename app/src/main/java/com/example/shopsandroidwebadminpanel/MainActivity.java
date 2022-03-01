@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,8 @@ import com.example.shopsandroidwebadminpanel.api.services.ProductService;
 import com.example.shopsandroidwebadminpanel.dto.ProductAddDTO;
 import com.example.shopsandroidwebadminpanel.dto.ProductDTO;
 import com.google.android.material.card.MaterialCardView;
+
+import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -100,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
                 .enqueue(new Callback<ProductAddDTO>() {
                     @Override
                     public void onResponse(@NonNull Call<ProductAddDTO> call, @NonNull Response<ProductAddDTO> response) {
-                        Toast.makeText(getApplicationContext(), "CODE: " + response.code(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -187,13 +189,15 @@ public class MainActivity extends AppCompatActivity {
         ConstraintLayout postLayout = findViewById(R.id.postfragment);
         ConstraintLayout getidlayout = findViewById(R.id.getidfragment);
         ConstraintLayout submitarea = findViewById(R.id.submitarea);
+        ConstraintLayout cardgetname = findViewById(R.id.getnamefragment);
         MaterialCardView card = findViewById(R.id.card);
 
         deleteLayout.setVisibility(View.VISIBLE);
-        postLayout.setVisibility(View.INVISIBLE);
-        getidlayout.setVisibility(View.INVISIBLE);
-        submitarea.setVisibility(View.INVISIBLE);
-        card.setVisibility(View.INVISIBLE);
+        postLayout.setVisibility(View.GONE);
+        getidlayout.setVisibility(View.GONE);
+        card.setVisibility(View.GONE);
+        submitarea.setVisibility(View.GONE);
+        cardgetname.setVisibility(View.GONE);
     }
 
     public void PostSwitch(View v) {
@@ -201,13 +205,15 @@ public class MainActivity extends AppCompatActivity {
         ConstraintLayout postLayout = findViewById(R.id.postfragment);
         ConstraintLayout getidlayout = findViewById(R.id.getidfragment);
         ConstraintLayout submitarea = findViewById(R.id.submitarea);
+        ConstraintLayout cardgetname = findViewById(R.id.getnamefragment);
         MaterialCardView card = findViewById(R.id.card);
 
-        deleteLayout.setVisibility(View.INVISIBLE);
+        deleteLayout.setVisibility(View.GONE);
         postLayout.setVisibility(View.VISIBLE);
-        getidlayout.setVisibility(View.INVISIBLE);
-        card.setVisibility(View.INVISIBLE);
-        submitarea.setVisibility(View.INVISIBLE);
+        getidlayout.setVisibility(View.GONE);
+        card.setVisibility(View.GONE);
+        submitarea.setVisibility(View.GONE);
+        cardgetname.setVisibility(View.GONE);
     }
 
     public void GetIdSwitch(View v) {
@@ -215,18 +221,66 @@ public class MainActivity extends AppCompatActivity {
         ConstraintLayout postLayout = findViewById(R.id.postfragment);
         ConstraintLayout getidlayout = findViewById(R.id.getidfragment);
         ConstraintLayout submitarea = findViewById(R.id.submitarea);
+        ConstraintLayout cardgetname = findViewById(R.id.getnamefragment);
         MaterialCardView card = findViewById(R.id.card);
 
-        deleteLayout.setVisibility(View.INVISIBLE);
-        postLayout.setVisibility(View.INVISIBLE);
+        deleteLayout.setVisibility(View.GONE);
+        postLayout.setVisibility(View.GONE);
         getidlayout.setVisibility(View.VISIBLE);
-        submitarea.setVisibility(View.INVISIBLE);
-        card.setVisibility(View.INVISIBLE);
+        card.setVisibility(View.GONE);
         submitarea.setVisibility(View.GONE);
+        cardgetname.setVisibility(View.GONE);
     }
 
     public void GetNameSwitch(View v) {
+        ConstraintLayout deleteLayout = findViewById(R.id.deletefragment);
+        ConstraintLayout postLayout = findViewById(R.id.postfragment);
+        ConstraintLayout getidlayout = findViewById(R.id.getidfragment);
+        ConstraintLayout submitarea = findViewById(R.id.submitarea);
+        ConstraintLayout cardgetname = findViewById(R.id.getnamefragment);
+        MaterialCardView card = findViewById(R.id.card);
 
+        deleteLayout.setVisibility(View.GONE);
+        postLayout.setVisibility(View.GONE);
+        getidlayout.setVisibility(View.GONE);
+        card.setVisibility(View.GONE);
+        submitarea.setVisibility(View.GONE);
+        cardgetname.setVisibility(View.VISIBLE);
+    }
+
+    public void GetNameFunc(View v) {
+        EditText edittext = findViewById(R.id.edittextgetname);
+        String getname = String.valueOf(edittext.getText());
+
+        TextView prodNameGetName = findViewById(R.id.prodnamegetname);
+        TextView prodDescGetName = findViewById(R.id.proddescgetname);
+        TextView prodPriceGetName = findViewById(R.id.prodpricegetname);
+        ImageView prodImgGetName = findViewById(R.id.prodimggetname);
+        MaterialCardView cardgetname = findViewById(R.id.cardgetname);
+        LinearLayout liner = findViewById(R.id.oklayout);
+
+        ProductService.getInstance()
+                .getProductsApi()
+                .getWithName(getname)
+                .enqueue(new Callback<ProductDTO>() {
+                    @Override
+                    public void onResponse(Call<ProductDTO> call, Response<ProductDTO> response) {
+                        ProductDTO dto = response.body();
+                        byte[] decoded = Base64.decode(dto.getImage(), Base64.DEFAULT);
+                        Bitmap btmp = BitmapFactory.decodeByteArray(decoded, 0, decoded.length);
+                        prodNameGetName.setText(dto.getName());
+                        prodDescGetName.setText(dto.getDescription());
+                        prodPriceGetName.setText(dto.getPrice());
+                        prodImgGetName.setImageBitmap(btmp);
+                        cardgetname.setVisibility(View.VISIBLE);
+                        liner.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProductDTO> call, Throwable t) {
+
+                    }
+                });
     }
 
     public void YesButton(View v) {
@@ -258,5 +312,14 @@ public class MainActivity extends AppCompatActivity {
 
         card.setVisibility(View.GONE);
         submitarea.setVisibility(View.GONE);
+    }
+
+    public void OkButton(View v) {
+        MaterialCardView cardgetname = findViewById(R.id.cardgetname);
+        LinearLayout liner = findViewById(R.id.oklayout);
+        EditText edittext = findViewById(R.id.edittextgetname);
+        cardgetname.setVisibility(View.GONE);
+        liner.setVisibility(View.GONE);
+        edittext.setText(null);
     }
 }
